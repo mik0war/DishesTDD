@@ -21,6 +21,11 @@ class Pizza(Dish):
     def get_price(self):
         return self.__price - self.__discount * self.__price
 
+    def __eq__(self, other):
+        return (isinstance(other, Pizza)
+                and self.__name == other.__name
+                and self.get_price() == other.get_price())
+
 class Burger(Dish):
 
     def __init__(self, name, price, discount):
@@ -34,6 +39,11 @@ class Burger(Dish):
     def get_price(self):
         return self.__price - self.__discount * self.__price
 
+    def __eq__(self, other):
+        return (isinstance(other, Burger)
+                and self.__name == other.__name
+                and self.get_price() == other.get_price())
+
 class Sushi(Dish):
 
     def __init__(self, data_source):
@@ -45,6 +55,11 @@ class Sushi(Dish):
     def get_price(self):
         return self.__dataSource["price"]
 
+    def __eq__(self, other):
+        return (isinstance(other, Sushi)
+                and self.__dataSource["name"] == other.__dataSource["name"]
+                and self.__dataSource["price"] == other.__dataSource["price"])
+
 class Salad(Dish):
 
     def get_name(self):
@@ -52,6 +67,9 @@ class Salad(Dish):
 
     def get_price(self):
         return 8.92
+
+    def __eq__(self, other):
+        return isinstance(other, Salad)
 
 class Drink(Dish):
 
@@ -67,6 +85,11 @@ class Drink(Dish):
         return self._price
 
 
+    def __eq__(self, other):
+        return (isinstance(other, Drink)
+                and self.__name == other.__name
+                and self.get_price() == other.get_price())
+
 class Dessert(Dish):
 
     def __init__(self, name, price):
@@ -79,11 +102,19 @@ class Dessert(Dish):
     def get_price(self):
         return self._price
 
+    def __eq__(self, other):
+        return (isinstance(other, Dessert)
+                and self.__name == other.__name
+                and self.get_price() == other.get_price())
+
 class EmptyDish(Dish):
     def get_name(self):
         return ''
     def get_price(self):
         return 0
+
+    def __eq__(self, other):
+        return isinstance(other, EmptyDish)
 
 class ComboMeal(Dish):
     __main_dish : Dish
@@ -118,4 +149,11 @@ class ComboMeal(Dish):
                       self.__drink.get_price()]
                      )
         return prices - self.__discount * prices
+
+class DishFactory:
+
+    def create_dish(self, dish_type, *args, **kwargs):
+        return dish_type(*args, **kwargs)
+
+
 
