@@ -53,3 +53,69 @@ class Salad(Dish):
     def get_price(self):
         return 8.92
 
+class Drink(Dish):
+
+    def __init__(self, name, price):
+        self.__name = name
+        self._price = price
+
+
+    def get_name(self):
+        return self.__name
+
+    def get_price(self):
+        return self._price
+
+
+class Dessert(Dish):
+
+    def __init__(self, name, price):
+        self.__name = name
+        self._price = price
+
+    def get_name(self):
+        return self.__name
+
+    def get_price(self):
+        return self._price
+
+class EmptyDish(Dish):
+    def get_name(self):
+        return ''
+    def get_price(self):
+        return 0
+
+class ComboMeal(Dish):
+    __main_dish : Dish
+    __dessert: Dish
+    __drink: Dish
+    __discount: int
+
+    def __init__(self,
+                 main_dish = EmptyDish(),
+                 dessert = EmptyDish(),
+                 drink = EmptyDish(),
+                 discount = 0):
+        self.__main_dish = main_dish
+        self.__dessert = dessert
+        self.__drink = drink
+        self.__discount = discount
+
+    def get_name(self):
+        names = ', '.join([
+            i for i in
+            (self.__main_dish.get_name(),
+             self.__dessert.get_name(),
+             self.__drink.get_name())
+            if i
+        ])
+
+        return '' if not names else f'Комбо {names}'
+
+    def get_price(self):
+        prices = sum([self.__main_dish.get_price(),
+                      self.__dessert.get_price(),
+                      self.__drink.get_price()]
+                     )
+        return prices - self.__discount * prices
+
