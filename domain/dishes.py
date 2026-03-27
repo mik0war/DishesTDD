@@ -156,6 +156,30 @@ class ComboMeal(Dish):
                 and self.__dessert == other.__dessert
                 and self.__drink == other.__drink)
 
+class ComboMealBuilder:
+    _main_dish = EmptyDish()
+    _dessert = EmptyDish()
+    _drink = EmptyDish()
+
+    def set_main_dish(self, main_dish):
+        self._main_dish = main_dish
+        return self
+
+    def set_dessert(self, dessert):
+        self._dessert = dessert
+        return self
+
+    def set_drink(self, drink):
+        self._drink = drink
+        return self
+
+    def build(self):
+        if self._main_dish == EmptyDish():
+            raise ValueError('Empty main Dish')
+
+        return ComboMeal(self._main_dish, self._dessert, self._drink)
+
+
 class DishFactory:
 
     def create_dish(self, dish_type, name, price, discount, *args, **kwargs):

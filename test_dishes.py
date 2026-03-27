@@ -1,5 +1,5 @@
 from domain.dishes import *
-
+import pytest
 
 def test_dishes_factory():
 
@@ -64,3 +64,56 @@ def test_combo_meal():
                                  )
     # Блок проверки
     assert actual == expected
+
+def test_combo_meal_builder():
+    # Блок инициализации результата
+    expected = ComboMeal(
+        Salad(),
+        Dessert("Печенье", 10),
+        Drink("Чай", 40)
+    )
+
+    # Блок вызова тестируемой функции
+    actual = (ComboMealBuilder()
+               .set_main_dish(Salad())
+               .set_dessert(Dessert("Печенье", 10))
+               .set_drink(Drink("Чай", 40))).build()
+
+
+    # Блок проверки
+    assert actual == expected
+
+    # Блок инициализации результата
+    expected = ComboMeal(
+        Salad(),
+        EmptyDish(),
+        Drink("Чай", 40)
+    )
+
+    # Блок вызова тестируемой функции
+    actual = (ComboMealBuilder()
+              .set_main_dish(Salad())
+              .set_drink(Drink("Чай", 40))).build()
+
+    # Блок проверки
+    assert actual == expected
+
+    # Блок инициализации результата
+    expected = ComboMeal(
+        Salad(),
+        EmptyDish(),
+        EmptyDish()
+    )
+
+    # Блок вызова тестируемой функции
+    actual = (ComboMealBuilder()
+              .set_main_dish(Salad())).build()
+
+    # Блок проверки
+    assert actual == expected
+
+def test_combo_meal_without_main_dish():
+    with pytest.raises(ValueError):
+        ComboMealBuilder().build()
+
+
