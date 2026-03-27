@@ -1,4 +1,4 @@
-from domain.dishes import Salad, DishFactory, Pizza
+from domain.dishes import *
 
 
 def test_dishes_factory():
@@ -8,32 +8,59 @@ def test_dishes_factory():
 
     # Блок вызова тестируемой функции
     factory = DishFactory()
-    actual = factory.create_dish(Salad)
+    actual = factory.create_dish(Salad,0, 0, '')
 
     # Блок проверки
 
     assert actual == expected
 
     # Блок инициализации результата
-    expected = Pizza("Пеперони", 10)
+    expected = Pizza("Пеперони", 10, 0)
 
     # Блок вызова тестируемой функции
     factory = DishFactory()
-    actual = factory.create_dish(Pizza, "Пеперони", 10)
+    actual = factory.create_dish(Pizza, "Пеперони", 10, 0)
 
     # Блок проверки
 
     assert actual == expected
 
     # Блок инициализации результата
-    expected = Pizza("Пеперони", 10)
+    expected = Pizza("Пеперони", 10, 0)
 
     # Блок вызова тестируемой функции
     factory = DishFactory()
-    actual = factory.create_dish(Pizza, "Пеперони", price=10)
+    actual = factory.create_dish(Pizza, "Пеперони", price=10, discount=0)
+
+    # Блок проверки
+
+    assert actual == expected
+
+    # Блок инициализации результата
+    expected = Dessert("Печенье", 10)
+
+    # Блок вызова тестируемой функции
+    factory = DishFactory()
+    actual = factory.create_dish(Dessert, "Печенье", price=10, discount=1234567)
 
     # Блок проверки
 
     assert actual == expected
 
 
+def test_combo_meal():
+
+    # Блок инициализации результата
+    expected = ComboMeal(
+        Salad(),
+        Dessert("Печенье", 10),
+        Drink("Чай", 40)
+    )
+
+    # Блок вызова тестируемой функции
+    factory = DishFactory()
+    actual = factory.create_dish(ComboMeal, "", 0, 0,
+                                 Salad(), Dessert("Печенье", 10), drink=Drink("Чай", 40)
+                                 )
+    # Блок проверки
+    assert actual == expected

@@ -150,10 +150,29 @@ class ComboMeal(Dish):
                      )
         return prices - self.__discount * prices
 
+    def __eq__(self, other):
+        return (isinstance(other, ComboMeal)
+                and self.__main_dish == other.__main_dish
+                and self.__dessert == other.__dessert
+                and self.__drink == other.__drink)
+
 class DishFactory:
 
-    def create_dish(self, dish_type, *args, **kwargs):
-        return dish_type(*args, **kwargs)
+    def create_dish(self, dish_type, name, price, discount, *args, **kwargs):
+        dictionary = {
+            Sushi: [{'name': name, 'price': price, 'discount': discount}],
+            Salad: [],
+            Dessert: [name, price],
+            Drink: [name, price],
+        }
+
+        if dish_type == ComboMeal:
+            return ComboMeal(*args, **kwargs)
+
+        if dish_type in dictionary:
+            return dish_type(*dictionary[dish_type])
+
+        return dish_type(name, price, discount)
 
 
 
